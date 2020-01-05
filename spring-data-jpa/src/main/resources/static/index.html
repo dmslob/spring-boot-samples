@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="jquery.serialize-object.min.js"></script>
+    </head>
+
+    <body>
+        <h2>Create a new user</h2>
+        <p>Insert the user's birthday date with the right format and save it!</p>
+        <form id="birthday-date-form">
+            <label for="birthday-date">
+                Birthday date in the format "yyyy-MM-dd" (example: 1977-01-24):
+            </label>
+            <br/>
+            <input id="birthday-date" type="text" name="birthdayDate"/>
+            <button id="submit-birthday-date" type="submit">Save</button>
+            <span id="result-message"></span>
+        </form>
+        <br/>
+        <script>
+            $(document).ready(function() {
+              $("#birthday-date-form").on("submit", saveUser);
+            });
+
+            function saveUser(event) {
+              event.preventDefault();
+              $.ajax({
+                url: "/user",
+                type: "POST",
+                data: $("#birthday-date-form").serializeJSON(),
+                contentType: "application/json; charset=UTF-8",
+                success: function () {
+                  $("#result-message")
+                      .text("User succesfully saved.");
+                },
+                error: function () {
+                  $("#result-message")
+                    .text("An error occurred saving the user (check the date format).");
+                }
+              });
+            }
+        </script>
+    </body>
+
+</html>
